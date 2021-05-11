@@ -1,6 +1,7 @@
 const { publish, closeOnErr } = require("./producer");
 
 var amqpConnection = null;
+
 // A worker that acks messages only if processed succesfully
 const startWorker = (amqpConn) => {
   amqpConnection = amqpConn;

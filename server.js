@@ -4,7 +4,7 @@ const { startWorker } = require("./consumer");
 
 // if the connection is closed or fails to be established at all, we will reconnect
 var amqpConn = null;
-function start() {
+const start = () => {
   amqp.connect("amqp://localhost", function (err, conn) {
     if (err) {
       console.error("[AMQP]", err.message);
@@ -25,7 +25,7 @@ function start() {
 
     whenConnected();
   });
-}
+};
 
 function whenConnected() {
   startPublisher(amqpConn);

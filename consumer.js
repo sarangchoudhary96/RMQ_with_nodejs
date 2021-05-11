@@ -2,7 +2,7 @@ const { publish, closeOnErr } = require("./producer");
 
 var amqpConnection = null;
 // A worker that acks messages only if processed succesfully
-function startWorker(amqpConn) {
+const startWorker = (amqpConn) => {
   amqpConnection = amqpConn;
   amqpConn.createChannel(function (err, ch) {
     if (closeOnErr(err)) return;
@@ -32,12 +32,12 @@ function startWorker(amqpConn) {
       console.log("Worker is started");
     });
   });
-}
+};
 
-function work(msg, cb) {
+const work = (msg, cb) => {
   console.log("Got msg", msg.content.toString());
   cb(true);
-}
+};
 
 setInterval(function () {
   publish("", "jobs", new Buffer.from("work work work"));

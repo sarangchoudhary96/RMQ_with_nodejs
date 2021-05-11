@@ -1,6 +1,6 @@
 var pubChannel = null;
 var offlinePubQueue = [];
-function startPublisher(amqpConn) {
+const startPublisher = (amqpConn) => {
   amqpConn.createConfirmChannel(function (err, ch) {
     if (closeOnErr(err)) return;
     ch.on("error", function (err) {
@@ -17,10 +17,10 @@ function startPublisher(amqpConn) {
       publish(m[0], m[1], m[2]);
     }
   });
-}
+};
 
 // method to publish a message, will queue messages internally if the connection is down and resend later
-function publish(exchange, routingKey, content) {
+const publish = (exchange, routingKey, content) => {
   try {
     pubChannel.publish(
       exchange,
@@ -39,13 +39,13 @@ function publish(exchange, routingKey, content) {
     console.error("[AMQP] publish", e.message);
     offlinePubQueue.push([exchange, routingKey, content]);
   }
-}
+};
 
-function closeOnErr(err) {
+const closeOnErr = (err) => {
   if (!err) return false;
   console.error("[AMQP] error", err);
   amqpConnection.close();
   return true;
-}
+};
 
 module.exports = { startPublisher, publish, closeOnErr };
